@@ -146,22 +146,14 @@ class MainHandler(webapp2.RequestHandler):
         'notification': {'level': 'DEFAULT'}
     }
     if self.request.get('html') == 'on':
-      body['html'] = [self.request.get('message')]
+      sloky = list(map(lambda h: "<article><section>" + h + "</section></article>", self.request.get('message').replace("\r", "").replace("\n", "<br>").split("<br><br>")));
+      body['html'] = sloky[0]
+      body['htmlPages'] = sloky[1:]
     else:
       body['text'] = self.request.get('message')
 
-    media_link = self.request.get('imageUrl')
-    if media_link:
-      if media_link.startswith('/'):
-        media_link = util.get_full_url(self, media_link)
-      resp = urlfetch.fetch(media_link, deadline=20)
-      media = MediaIoBaseUpload(
-          io.BytesIO(resp.content), mimetype='image/jpeg', resumable=True)
-    else:
-      media = None
-
     # self.mirror_service is initialized in util.auth_required.
-    self.mirror_service.timeline().insert(body=body, media_body=media).execute()
+    self.mirror_service.timeline().insert(body=body).execute()
     return  'A timeline item has been inserted.'
 
   def _insert_item_with_action(self):
