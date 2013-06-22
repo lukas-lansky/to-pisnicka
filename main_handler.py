@@ -145,12 +145,10 @@ class MainHandler(webapp2.RequestHandler):
     body = {
         'notification': {'level': 'DEFAULT'}
     }
-    if self.request.get('html') == 'on':
-      sloky = list(map(lambda h: "<article><section>" + h + "</section></article>", self.request.get('message').replace("\r", "").replace("\n", "<br>").split("<br><br>")));
-      body['html'] = sloky[0]
-      body['htmlPages'] = sloky[1:]
-    else:
-      body['text'] = self.request.get('message')
+
+    sloky = list(map(lambda h: "<article><section>" + h + "</section></article>", self.request.get('message').replace("\r", "").replace("\n", "<br>").split("<br><br>")))
+    body['html'] = "<article><section>Skákal pes</section></article>"
+    body['htmlPages'] = sloky
 
     # self.mirror_service is initialized in util.auth_required.
     self.mirror_service.timeline().insert(body=body).execute()

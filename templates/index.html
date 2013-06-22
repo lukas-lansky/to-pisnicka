@@ -38,26 +38,11 @@ limitations under the License.
   </style>
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="brand" href="#">Glassware Starter Project: Python Edition</a>
-
-      <div class="nav-collapse collapse">
-        <form class="navbar-form pull-right" action="/signout" method="post">
-          <button type="submit" class="btn">Sign out</button>
-        </form>
-      </div>
-      <!--/.nav-collapse -->
-    </div>
-  </div>
-</div>
-
 <div class="container">
 
   <!-- Main hero unit for a primary marketing message or call to action -->
   <div class="hero-unit">
-    <h1>Your Recent Timeline</h1>
+    <h1>Pošli mi písničku!</h1>
     {% if message %}
     <span class="label label-warning">Message: {{ message }}</span>
     {% endif %}
@@ -65,26 +50,9 @@ limitations under the License.
     <div style="margin-top: 5px;">
 
       {% for timelineItem in timelineItems %}
-      <ul class="span3 tile">
-        <li><strong>ID: </strong> {{ timelineItem.id }}
-        </li>
-        <li>
-          <strong>Text: </strong> {{ timelineItem.text }}
-        </li>
-        <li>
-          <strong>HTML: </strong> {{ timelineItem.html|e }}
-        </li>
-        <li>
-          <strong>Attachments: </strong>
-          {% for attachment in timelineItem.attachments %}
-            {% if attachment.contentType.startswith('image') %}
-            <img src="/attachmentproxy?attachment={{ attachment.id }}&timelineItem={{ timelineItem.id }}">
-            {% else %}
-            <a href="/attachmentproxy?attachment={{ attachment.id }}&timelineItem={{ timelineItem.id }}">Download</a>
-            {% endif %}
-          {% endfor %}
-        </li>
-      </ul>
+        <script>
+          console.log("{{ timelineItem.html|e }}");
+        </script>
       {% endfor %}
     </div>
     <div style="clear:both;"></div>
@@ -99,7 +67,6 @@ limitations under the License.
 
       <form action="/" method="post">
         <input type="hidden" name="operation" value="insertItem">
-        <input type="hidden" name="html" value="on">
         <textarea name="message">Skákal pes,
 přes oves!
 Přes zelenou louku,
